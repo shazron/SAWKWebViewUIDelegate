@@ -9,23 +9,25 @@ A UIDelegate for WKWebView that is equal to the default UIDelegate behaviour in 
 WKWebViewConfiguration* configuration = [[WKWebViewConfiguration alloc] init];
 configuration.userContentController = [[WKUserContentController alloc] init];
 
-CGRect bounds = [[UIScreen mainScreen] bounds];
-NSString* title = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
-
-WKWebView* webView = [[WKWebView alloc] initWithFrame:bounds configuration:configuration];
+WKWebView* webView = [[WKWebView alloc] initWithFrame:[[UIScreen mainScreen] bounds] configuration:configuration];
 ```
 
-####  Method 1 to initialize the UIDelegate, it will just use the rootViewController of the app
-
+####  Method 1: uses CFBundleDisplayName for the title and the app rootViewController
 ```
-SAWKWebViewUIDelegate* uiDelegate = [[SAWKWebViewUIDelegate alloc] initWithTitle:title];
+SAWKWebViewUIDelegate* uiDelegate = [[SAWKWebViewUIDelegate alloc] init];
 webView.UIDelegate = uiDelegate;
 ```
-#### Method 2 to initialize the UIDelegate, specify a viewController
 
+####  Method 2: specify the title and uses the app rootViewController
+```
+SAWKWebViewUIDelegate* uiDelegate = [[SAWKWebViewUIDelegate alloc] initWithTitle:@"MyAppTitle"];
+webView.UIDelegate = uiDelegate;
+```
+
+####  Method 3: specify the title and specify the viewController
 ```
 UIViewController* viewController = [UIApplication sharedApplication].delegate.window.rootViewController;
-SAWKWebViewUIDelegate* uiDelegate = [[SAWKWebViewUIDelegate alloc] initWithTitle:title viewController:viewController];
+SAWKWebViewUIDelegate* uiDelegate = [[SAWKWebViewUIDelegate alloc] initWithTitle:@"MyAppTitle" viewController:viewController];
 webView.UIDelegate = uiDelegate;
 ```
 

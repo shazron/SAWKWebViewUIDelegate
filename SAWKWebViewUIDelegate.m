@@ -18,12 +18,21 @@ limitations under the License.
 
 @implementation SAWKWebViewUIDelegate
 
+- (instancetype) init
+{
+    self = [super init];
+    if (self) {
+        [self __initWithTitle:nil viewController:nil];
+    }
+
+    return self;
+}
+
 - (instancetype) initWithTitle:(NSString*)title
 {
     self = [super init];
     if (self) {
-        self.title = title;
-        self.viewController = [UIApplication sharedApplication].delegate.window.rootViewController;
+        [self __initWithTitle:title viewController:nil];
     }
 
     return self;
@@ -33,12 +42,24 @@ limitations under the License.
 {
     self = [super init];
     if (self) {
-        self.title = title;
-        UIViewController* rootVc = [UIApplication sharedApplication].delegate.window.rootViewController;
-        self.viewController = viewController == nil? rootVc : viewController;
+        [self __initWithTitle:title viewController:viewController];
     }
 
     return self;
+}
+
+- (void) __initWithTitle:(NSString*)title viewController:(UIViewController*)viewController
+{
+    self.title = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+    self.viewController = [UIApplication sharedApplication].delegate.window.rootViewController;
+    
+    if (title != nil) {
+        self.title = title;
+    }
+    
+    if (viewController != nil) {
+        self.viewController = viewController;
+    }
 }
 
 - (void) webView:(WKWebView*)webView runJavaScriptAlertPanelWithMessage:(NSString*)message
